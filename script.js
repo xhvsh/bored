@@ -3,13 +3,11 @@ const reset = document.querySelector('.reset');
 
 const participantsValue = document.querySelector('.participants-value');
 const priceValue = document.querySelector('.price-value');
-const finalPrice = document.querySelector('.final-price');
 const priceP = document.querySelector('.price-p');
 const display = document.querySelector('.display-price');
 
 const activityName = document.querySelector('.activity-name');
 const activityInfo = document.querySelector('.activity-info');
-const activityPrice = document.querySelector('.activity-price');
 
 const participantsInput = document.querySelector('.participants');
 const priceInput = document.querySelector('.price');
@@ -20,7 +18,22 @@ participantsInput.addEventListener('input', () => {
 });
 priceInput.addEventListener('input', () => {
   var price = document.querySelector('.price').value;
-  priceValue.innerHTML = price;
+
+  if (price < 0.05) {
+    priceValue.innerHTML = `Free`;
+  } else if (price >= 0.05 && price <= 0.2) {
+    priceValue.innerHTML = `Very Cheap`;
+  } else if (price >= 0.25 && price <= 0.4) {
+    priceValue.innerHTML = `Cheap`;
+  } else if (price >= 0.45 && price <= 0.6) {
+    priceValue.innerHTML = `Medium`;
+  } else if (price >= 0.65 && price <= 0.8) {
+    priceValue.innerHTML = `Expensive`;
+  } else if (price >= 0.85 && price <= 0.95) {
+    priceValue.innerHTML = `Very Expensive`;
+  } else if (price >= 0.95) {
+    priceValue.innerHTML = `No limit`;
+  }
 });
 
 btn.addEventListener('click', () => {
@@ -34,20 +47,25 @@ btn.addEventListener('click', () => {
     .then((data) => {
       if (data.error) {
         activityName.innerHTML = data.error;
-        [activityInfo, display, priceP].forEach((elem) => elem.classList.add('hidden'));
+        [activityInfo, priceP].forEach((elem) => elem.classList.add('hidden'));
       } else {
         activityInfo.classList.remove('hidden');
-        display.classList.remove('hidden');
         priceP.classList.remove('hidden');
 
-        activityName.innerHTML = data.activity;
+        activityName.innerHTML = `<b>${data.activity}</b>`;
         activityInfo.innerHTML = `Type: ${data.type} | Participants: ${data.participants}`;
-        activityPrice.value = data.price;
-        finalPrice.innerHTML = data.price;
-
-        if (activityPrice.value === '0') {
-          console.log(activityPrice);
-          activityPrice.classList.add('free');
+        if (data.price < 0.05) {
+          priceP.innerHTML = `Price: <span style="color:#00ffb7;">Free</span>`;
+        } else if (data.price >= 0.05 && data.price <= 0.2) {
+          priceP.innerHTML = `Price: <span style="color:#00ff00;">Very Cheap</span>`;
+        } else if (data.price >= 0.25 && data.price <= 0.4) {
+          priceP.innerHTML = `Price: <span style="color:#aeff00;">Cheap</span>`;
+        } else if (data.price >= 0.45 && data.price <= 0.6) {
+          priceP.innerHTML = `Price: <span style="color:#d4ff00;">Medium</span>`;
+        } else if (data.price >= 0.65 && data.price <= 0.8) {
+          priceP.innerHTML = `Price: <span style="color:#ff9500;">Expensive</span>`;
+        } else if (data.price >= 0.85 && data.price <= 1) {
+          priceP.innerHTML = `Price: <span style="color:#ff4800;">Very Expensive</span>`;
         }
       }
     })
@@ -57,12 +75,10 @@ btn.addEventListener('click', () => {
 reset.addEventListener('click', () => {
   activityName.innerHTML = `Activity will be displayed there.`;
   activityInfo.innerHTML = ``;
-  activityPrice.value = 0;
-  finalPrice.innerHTML = 0;
-  priceValue.innerHTML = 0;
+  priceValue.innerHTML = `Free`;
+  priceP.innerHTML = ``;
   participantsValue.innerHTML = 1;
 
   activityInfo.classList.add('hidden');
-  display.classList.add('hidden');
   priceP.classList.add('hidden');
 });
