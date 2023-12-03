@@ -80,7 +80,7 @@ reset.addEventListener('click', () => {
   activityPrice.value = 0;
   finalPrice.innerHTML = 0;
   priceValue.innerHTML = 0;
-  participantsValue.innerHTML = 0;
+  participantsValue.innerHTML = 1;
 
   activityInfo.classList.add('hidden');
   display.classList.add('hidden');
